@@ -31,7 +31,7 @@ full_df = load_data()
 
 st.set_page_config(
     # Title and icon for the browser's tab bar:
-    page_title="João Pessoa Weather",
+    page_title="Clima em João Pessoa",
     page_icon="🌴",
     # Make the content take up the width of the page:
     layout="wide",
@@ -39,18 +39,18 @@ st.set_page_config(
 
 
 """
-# João Pessoa Weather
+# Clima em João Pessoa
 
-Let's explore daily weather in [João Pessoa, Paraíba,
-Brazil](https://en.wikipedia.org/wiki/Jo%C3%A3o_Pessoa), sourced from the free
-[Open-Meteo Historical Weather API](https://open-meteo.com/)!
+Vamos explorar o clima diário em [João Pessoa, Paraíba,
+Brasil](https://pt.wikipedia.org/wiki/Jo%C3%A3o_Pessoa), obtido gratuitamente
+pela [API de Histórico Meteorológico Open-Meteo](https://open-meteo.com/)!
 """
 
 ""  # Add a little vertical space. Same as st.write("").
 ""
 
 """
-## 2024 Summary
+## Resumo de 2024
 """
 
 ""
@@ -82,7 +82,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[0]:
         st.metric(
-            "Max tempearture",
+            "Temperatura máxima",
             f"{max_temp_2024:0.1f}C",
             delta=f"{max_temp_2024 - max_temp_2023:0.1f}C",
             width="content",
@@ -90,7 +90,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[1]:
         st.metric(
-            "Min tempearture",
+            "Temperatura mínima",
             f"{min_temp_2024:0.1f}C",
             delta=f"{min_temp_2024 - min_temp_2023:0.1f}C",
             width="content",
@@ -100,7 +100,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[0]:
         st.metric(
-            "Max precipitation",
+            "Precipitação máxima",
             f"{max_prec_2024:0.1f}C",
             delta=f"{max_prec_2024 - max_prec_2023:0.1f}C",
             width="content",
@@ -108,7 +108,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[1]:
         st.metric(
-            "Min precipitation",
+            "Precipitação mínima",
             f"{min_prec_2024:0.1f}C",
             delta=f"{min_prec_2024 - min_prec_2023:0.1f}C",
             width="content",
@@ -118,7 +118,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[0]:
         st.metric(
-            "Max wind",
+            "Vento máximo",
             f"{max_wind_2024:0.1f}m/s",
             delta=f"{max_wind_2024 - max_wind_2023:0.1f}m/s",
             width="content",
@@ -126,7 +126,7 @@ with st.container(horizontal=True, gap="medium"):
 
     with cols[1]:
         st.metric(
-            "Min wind",
+            "Vento mínimo",
             f"{min_wind_2024:0.1f}m/s",
             delta=f"{min_wind_2024 - min_wind_2023:0.1f}m/s",
             width="content",
@@ -135,11 +135,11 @@ with st.container(horizontal=True, gap="medium"):
     cols = st.columns(2, gap="medium", width=300)
 
     weather_icons = {
-        "sun": "☀️",
-        "rain": "💧",
-        "fog": "😶‍🌫️",
-        "drizzle": "🌧️",
-        "thunderstorm": "⛈️",
+        "sol": "☀️",
+        "chuva": "💧",
+        "neblina": "😶‍🌫️",
+        "garoa": "🌧️",
+        "tempestade": "⛈️",
     }
 
     with cols[0]:
@@ -147,7 +147,7 @@ with st.container(horizontal=True, gap="medium"):
             full_df["weather"].value_counts().head(1).reset_index()["weather"][0]
         )
         st.metric(
-            "Most common weather",
+            "Clima mais comum",
             f"{weather_icons[weather_name]} {weather_name.upper()}",
         )
 
@@ -156,7 +156,7 @@ with st.container(horizontal=True, gap="medium"):
             full_df["weather"].value_counts().tail(1).reset_index()["weather"][0]
         )
         st.metric(
-            "Least common weather",
+            "Clima menos comum",
             f"{weather_icons[weather_name]} {weather_name.upper()}",
         )
 
@@ -164,39 +164,39 @@ with st.container(horizontal=True, gap="medium"):
 ""
 
 """
-## Compare different years
+## Comparar diferentes anos
 """
 
 YEARS = full_df["date"].dt.year.unique()
 selected_years = st.pills(
-    "Years to compare", YEARS, default=YEARS, selection_mode="multi"
+    "Anos para comparar", YEARS, default=YEARS, selection_mode="multi"
 )
 
 if not selected_years:
-    st.warning("You must select at least 1 year.", icon=":material/warning:")
+    st.warning("Você deve selecionar pelo menos 1 ano.", icon=":material/warning:")
 
 df = full_df[full_df["date"].dt.year.isin(selected_years)]
 
 cols = st.columns([3, 1])
 
 with cols[0].container(border=True, height="stretch"):
-    "### Temperature"
+    "### Temperatura"
 
     st.altair_chart(
         alt.Chart(df)
         .mark_bar(width=1)
         .encode(
-            alt.X("date", timeUnit="monthdate").title("date"),
-            alt.Y("temp_max").title("temperature range (C)"),
+            alt.X("date", timeUnit="monthdate").title("data"),
+            alt.Y("temp_max").title("faixa de temperatura (C)"),
             alt.Y2("temp_min"),
-            alt.Color("date:N", timeUnit="year").title("year"),
+            alt.Color("date:N", timeUnit="year").title("ano"),
             alt.XOffset("date:N", timeUnit="year"),
         )
         .configure_legend(orient="bottom")
     )
 
 with cols[1].container(border=True, height="stretch"):
-    "### Weather distribution"
+    "### Distribuição do clima"
 
     st.altair_chart(
         alt.Chart(df)
@@ -212,7 +212,7 @@ with cols[1].container(border=True, height="stretch"):
 cols = st.columns(2)
 
 with cols[0].container(border=True, height="stretch"):
-    "### Wind"
+    "### Vento"
 
     st.altair_chart(
         alt.Chart(df)
@@ -224,23 +224,23 @@ with cols[0].container(border=True, height="stretch"):
         )
         .mark_line(size=1)
         .encode(
-            alt.X("date", timeUnit="monthdate").title("date"),
-            alt.Y("avg_wind:Q").title("average wind past 2 weeks (m/s)"),
-            alt.Color("date:N", timeUnit="year").title("year"),
+            alt.X("date", timeUnit="monthdate").title("data"),
+            alt.Y("avg_wind:Q").title("vento médio nas últimas 2 semanas (m/s)"),
+            alt.Color("date:N", timeUnit="year").title("ano"),
         )
         .configure_legend(orient="bottom")
     )
 
 with cols[1].container(border=True, height="stretch"):
-    "### Precipitation"
+    "### Precipitação"
 
     st.altair_chart(
         alt.Chart(df)
         .mark_bar()
         .encode(
-            alt.X("date:N", timeUnit="month").title("date"),
-            alt.Y("precipitation:Q").aggregate("sum").title("precipitation (mm)"),
-            alt.Color("date:N", timeUnit="year").title("year"),
+            alt.X("date:N", timeUnit="month").title("data"),
+            alt.Y("precipitation:Q").aggregate("sum").title("precipitação (mm)"),
+            alt.Color("date:N", timeUnit="year").title("ano"),
         )
         .configure_legend(orient="bottom")
     )
@@ -248,21 +248,21 @@ with cols[1].container(border=True, height="stretch"):
 cols = st.columns(2)
 
 with cols[0].container(border=True, height="stretch"):
-    "### Monthly weather breakdown"
+    "### Clima mensal"
     ""
 
     st.altair_chart(
         alt.Chart(df)
         .mark_bar()
         .encode(
-            alt.X("month(date):O", title="month"),
-            alt.Y("count():Q", title="days").stack("normalize"),
+            alt.X("month(date):O", title="mês"),
+            alt.Y("count():Q", title="dias").stack("normalize"),
             alt.Color("weather:N"),
         )
         .configure_legend(orient="bottom")
     )
 
 with cols[1].container(border=True, height="stretch"):
-    "### Raw data"
+    "### Dados brutos"
 
     st.dataframe(df)

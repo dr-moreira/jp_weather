@@ -24,28 +24,28 @@ OUTPUT_PATH = Path(__file__).resolve().parent.parent / "data" / "jp_weather.csv"
 # small set of categories the dashboard displays. João Pessoa is tropical,
 # so "snow" never occurs and is omitted.
 WEATHER_CODE_MAP = {
-    0: "sun",
-    1: "sun",
-    2: "sun",
-    3: "sun",
-    45: "fog",
-    48: "fog",
-    51: "drizzle",
-    53: "drizzle",
-    55: "drizzle",
-    56: "drizzle",
-    57: "drizzle",
-    61: "rain",
-    63: "rain",
-    65: "rain",
-    66: "rain",
-    67: "rain",
-    80: "rain",
-    81: "rain",
-    82: "rain",
-    95: "thunderstorm",
-    96: "thunderstorm",
-    99: "thunderstorm",
+    0: "sol",
+    1: "sol",
+    2: "sol",
+    3: "sol",
+    45: "neblina",
+    48: "neblina",
+    51: "garoa",
+    53: "garoa",
+    55: "garoa",
+    56: "garoa",
+    57: "garoa",
+    61: "chuva",
+    63: "chuva",
+    65: "chuva",
+    66: "chuva",
+    67: "chuva",
+    80: "chuva",
+    81: "chuva",
+    82: "chuva",
+    95: "tempestade",
+    96: "tempestade",
+    99: "tempestade",
 }
 
 
@@ -77,7 +77,7 @@ def fetch() -> pd.DataFrame:
             # Open-Meteo returns km/h; convert to m/s to match the
             # original Seattle dataset's units.
             "wind": [round(v / 3.6, 1) for v in daily["windspeed_10m_max"]],
-            "weather": [WEATHER_CODE_MAP.get(c, "sun") for c in daily["weathercode"]],
+            "weather": [WEATHER_CODE_MAP.get(c, "sol") for c in daily["weathercode"]],
         }
     )
     return df
