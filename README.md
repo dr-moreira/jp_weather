@@ -1,17 +1,19 @@
-# Streamlit Seattle Weather dashboard
+# Streamlit João Pessoa Weather dashboard
 
-Just an example Streamlit dashboard exploring the classic Seattle Weather dataset.
+An example Streamlit dashboard exploring daily weather in João Pessoa,
+Paraíba, Brazil, sourced from the free
+[Open-Meteo Historical Weather API](https://open-meteo.com/).
 
 ## View it in one click
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://demo-seattle-weather.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://jp-weather.streamlit.app/)
 
 ## Try it on your machine
 
 1. Get the code:
 
    ```sh
-   $ git clone https://github.com/streamlit/demo-seattle-weather.git
+   $ git clone https://github.com/dr-moreira/jp_weather.git
    ```
 
 2. Start a virtual environment and get the dependencies (requires uv):
@@ -24,8 +26,14 @@ Just an example Streamlit dashboard exploring the classic Seattle Weather datase
    $ uv sync
    ```
 
-3. Start the app:
+3. (Optional) Refresh the dataset from Open-Meteo:
 
     ```sh
-    $ streamlit run streamlit_app.py
+    $ uv run python scripts/fetch_data.py
+    ```
+
+4. Start the app:
+
+    ```sh
+    $ streamlit run jp_weather.py
     ```

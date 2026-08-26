@@ -1,12 +1,12 @@
 [project]
-name = "seattle-weather"
+name = "jp-weather"
 version = "1.0.0"
-description = "An example dashboard exploring the Seattle Weather dataset"
+description = "An example dashboard exploring daily weather in João Pessoa, Brazil"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "altair>=5.5.0",
     "pandas>=2.3.1",
+    "requests>=2.32.5",
     "streamlit>=1.48.1",
-    "vega-datasets>=0.9.0",
 ]

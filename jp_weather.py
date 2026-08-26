@@ -13,59 +13,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime
+from pathlib import Path
+
 import streamlit as st
 import altair as alt
-import vega_datasets
+import pandas as pd
+
+DATA_PATH = Path(__file__).parent / "data" / "jp_weather.csv"
 
 
-full_df = vega_datasets.data("seattle_weather")
+@st.cache_data
+def load_data() -> pd.DataFrame:
+    return pd.read_csv(DATA_PATH, parse_dates=["date"])
+
+
+full_df = load_data()
 
 st.set_page_config(
     # Title and icon for the browser's tab bar:
-    page_title="Seattle Weather",
-    page_icon="🌦️",
+    page_title="João Pessoa Weather",
+    page_icon="🌴",
     # Make the content take up the width of the page:
     layout="wide",
 )
 
 
 """
-# Seattle Weather
+# João Pessoa Weather
 
-Let's explore the [classic Seattle Weather
-dataset](https://altair-viz.github.io/case_studies/exploring-weather.html)!
+Let's explore daily weather in [João Pessoa, Paraíba,
+Brazil](https://en.wikipedia.org/wiki/Jo%C3%A3o_Pessoa), sourced from the free
+[Open-Meteo Historical Weather API](https://open-meteo.com/)!
 """
 
 ""  # Add a little vertical space. Same as st.write("").
 ""
 
 """
-## 2015 Summary
+## 2024 Summary
 """
 
 ""
 
-df_2015 = full_df[full_df["date"].dt.year == 2015]
-df_2014 = full_df[full_df["date"].dt.year == 2014]
+df_2024 = full_df[full_df["date"].dt.year == 2024]
+df_2023 = full_df[full_df["date"].dt.year == 2023]
 
-max_temp_2015 = df_2015["temp_max"].max()
-max_temp_2014 = df_2014["temp_max"].max()
+max_temp_2024 = df_2024["temp_max"].max()
+max_temp_2023 = df_2023["temp_max"].max()
 
-min_temp_2015 = df_2015["temp_min"].min()
-min_temp_2014 = df_2014["temp_min"].min()
+min_temp_2024 = df_2024["temp_min"].min()
+min_temp_2023 = df_2023["temp_min"].min()
 
-max_wind_2015 = df_2015["wind"].max()
-max_wind_2014 = df_2014["wind"].max()
+max_wind_2024 = df_2024["wind"].max()
+max_wind_2023 = df_2023["wind"].max()
 
-min_wind_2015 = df_2015["wind"].min()
-min_wind_2014 = df_2014["wind"].min()
+min_wind_2024 = df_2024["wind"].min()
+min_wind_2023 = df_2023["wind"].min()
 
-max_prec_2015 = df_2015["precipitation"].max()
-max_prec_2014 = df_2014["precipitation"].max()
+max_prec_2024 = df_2024["precipitation"].max()
+max_prec_2023 = df_2023["precipitation"].max()
 
-min_prec_2015 = df_2015["precipitation"].min()
-min_prec_2014 = df_2014["precipitation"].min()
+min_prec_2024 = df_2024["precipitation"].min()
+min_prec_2023 = df_2023["precipitation"].min()
 
 
 with st.container(horizontal=True, gap="medium"):
@@ -74,16 +83,16 @@ with st.container(horizontal=True, gap="medium"):
     with cols[0]:
         st.metric(
             "Max tempearture",
-            f"{max_temp_2015:0.1f}C",
-            delta=f"{max_temp_2015 - max_temp_2014:0.1f}C",
+            f"{max_temp_2024:0.1f}C",
+            delta=f"{max_temp_2024 - max_temp_2023:0.1f}C",
             width="content",
         )
 
     with cols[1]:
         st.metric(
             "Min tempearture",
-            f"{min_temp_2015:0.1f}C",
-            delta=f"{min_temp_2015 - min_temp_2014:0.1f}C",
+            f"{min_temp_2024:0.1f}C",
+            delta=f"{min_temp_2024 - min_temp_2023:0.1f}C",
             width="content",
         )
 
@@ -92,16 +101,16 @@ with st.container(horizontal=True, gap="medium"):
     with cols[0]:
         st.metric(
             "Max precipitation",
-            f"{max_prec_2015:0.1f}C",
-            delta=f"{max_prec_2015 - max_prec_2014:0.1f}C",
+            f"{max_prec_2024:0.1f}C",
+            delta=f"{max_prec_2024 - max_prec_2023:0.1f}C",
             width="content",
         )
 
     with cols[1]:
         st.metric(
             "Min precipitation",
-            f"{min_prec_2015:0.1f}C",
-            delta=f"{min_prec_2015 - min_prec_2014:0.1f}C",
+            f"{min_prec_2024:0.1f}C",
+            delta=f"{min_prec_2024 - min_prec_2023:0.1f}C",
             width="content",
         )
 
@@ -110,16 +119,16 @@ with st.container(horizontal=True, gap="medium"):
     with cols[0]:
         st.metric(
             "Max wind",
-            f"{max_wind_2015:0.1f}m/s",
-            delta=f"{max_wind_2015 - max_wind_2014:0.1f}m/s",
+            f"{max_wind_2024:0.1f}m/s",
+            delta=f"{max_wind_2024 - max_wind_2023:0.1f}m/s",
             width="content",
         )
 
     with cols[1]:
         st.metric(
             "Min wind",
-            f"{min_wind_2015:0.1f}m/s",
-            delta=f"{min_wind_2015 - min_wind_2014:0.1f}m/s",
+            f"{min_wind_2024:0.1f}m/s",
+            delta=f"{min_wind_2024 - min_wind_2023:0.1f}m/s",
             width="content",
         )
 
@@ -127,10 +136,10 @@ with st.container(horizontal=True, gap="medium"):
 
     weather_icons = {
         "sun": "☀️",
-        "snow": "☃️",
         "rain": "💧",
         "fog": "😶‍🌫️",
         "drizzle": "🌧️",
+        "thunderstorm": "⛈️",
     }
 
     with cols[0]:
